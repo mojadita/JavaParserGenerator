@@ -14,4 +14,5 @@ package net.basen.parsers.generator;
  */
 public interface Symbol<T extends Symbol<T>> 
 {
+    // empty
 }
