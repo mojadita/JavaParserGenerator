@@ -22,10 +22,6 @@ import org.junit.Test;
  */
 public class TestRule {
 	
-	static enum Symbols implements Symbol<Symbols> {
-		expr, term, factor, NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER,
-	}
-	
 	BasicRule<Symbols> iut;
 	
 	@Test
