@@ -36,7 +36,11 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
 
         private void addToMaps() {
             S lft = getLhs();
+            m_nonTerminals.add( lft );
             m_terminals.remove( lft );
+            for (S s: this) 
+                if (!m_nonTerminals.contains( s )) 
+                    m_terminals.add( s );
             Map<String, Rule> lm = m_rules.get( lft );
             if (lm == null) {
                 lm = new TreeMap<String, Grammar<S>.Rule>();
@@ -58,11 +62,10 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
     } // class Rule
     
     public Grammar(Class<S> cl) {
-        m_terminals = EnumSet.allOf( cl );
+        m_terminals = EnumSet.noneOf( cl );
         m_nonTerminals = EnumSet.noneOf( cl );
         m_rules = new EnumMap<S, Map<String,Rule>>( cl );
     }
-    
     
     EnumSet<S> getNonTerminals() {
         return m_nonTerminals;
