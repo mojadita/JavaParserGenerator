@@ -10,6 +10,7 @@ package net.basen.parsers.generator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static net.basen.parsers.generator.Symbols.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class TestRule {
 	public void testEmptyConstructor() {
 		iut = new BasicRule<Symbols>();
 		assertNotNull(iut);
-		iut.setLhs(Symbols.expr);
+		iut.setLhs(expr);
 		assertEquals("expr: /* empty */;", iut.toString());
 	}
 	
@@ -42,35 +43,35 @@ public class TestRule {
 	@Test
 	public void testPopulate1() {
 		iut = new BasicRule<Symbols>();
-		iut.setLhs(Symbols.expr);
-		iut.add(Symbols.expr);
-		iut.add(Symbols.OR);
-		iut.add(Symbols.term);
+		iut.setLhs(expr);
+		iut.add(expr);
+		iut.add(OR);
+		iut.add(term);
 		assertEquals("expr: expr OR term;", iut.toString());
 	}
 	
 	@Test
 	public void testPopulate2() {
-		iut = new BasicRule<Symbols>(Symbols.term, Symbols.term, Symbols.AND, Symbols.factor);
+		iut = new BasicRule<Symbols>(term, term, AND, factor);
 		assertEquals("term: term AND factor;", iut.toString());
 	}
 	
 	@Test
 	public void testPopulate3() {
-		iut = new BasicRule<Symbols>(Symbols.factor, new ArrayList<Symbols>(
-				Arrays.asList(Symbols.LEFT_PAREN, Symbols.expr, Symbols.RIGHT_PAREN)));
+		iut = new BasicRule<Symbols>(factor, new ArrayList<Symbols>(
+				Arrays.asList(LEFT_PAREN, expr, RIGHT_PAREN)));
 		assertEquals("factor: LEFT_PAREN expr RIGHT_PAREN;", iut.toString());
 	}
 	
 	@Test
 	public void testCreateSeveralRules() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(Symbols.expr, Symbols.expr, Symbols.OR, Symbols.term);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(Symbols.expr, Symbols.term);
-		BasicRule<Symbols> R3 = new BasicRule<Symbols>(Symbols.term, Symbols.term, Symbols.AND, Symbols.factor);
-		BasicRule<Symbols> R4 = new BasicRule<Symbols>(Symbols.term, Symbols.factor);
-		BasicRule<Symbols> R5 = new BasicRule<Symbols>(Symbols.factor, Symbols.NEGATION, Symbols.factor);
-		BasicRule<Symbols> R6 = new BasicRule<Symbols>(Symbols.factor, Symbols.LEFT_PAREN, Symbols.expr, Symbols.RIGHT_PAREN);
-		BasicRule<Symbols> R7 = new BasicRule<Symbols>(Symbols.factor, Symbols.IDENTIFIER);
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, expr, OR, term);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, term);
+		BasicRule<Symbols> R3 = new BasicRule<Symbols>(term, term, AND, factor);
+		BasicRule<Symbols> R4 = new BasicRule<Symbols>(term, factor);
+		BasicRule<Symbols> R5 = new BasicRule<Symbols>(factor, NEGATION, factor);
+		BasicRule<Symbols> R6 = new BasicRule<Symbols>(factor, LEFT_PAREN, expr, RIGHT_PAREN);
+		BasicRule<Symbols> R7 = new BasicRule<Symbols>(factor, IDENTIFIER);
 		assertEquals("expr: expr OR term;", R1.toString());
 		assertEquals("expr: term;", R2.toString());
 		assertEquals("term: term AND factor;", R3.toString());

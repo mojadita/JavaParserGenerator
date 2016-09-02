@@ -9,6 +9,7 @@ package net.basen.parsers.generator;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import static net.basen.parsers.generator.Symbols.*;
 
 /**
  * 
@@ -22,42 +23,51 @@ public class TestGrammar {
     public void testInitialProperties() {
         iut = new Grammar<Symbols>(Symbols.class);
         assertTrue(iut.getNonTerminals().isEmpty());
-        for (Symbols s: Symbols.values())
-            assertTrue(iut.getTerminals().contains( s ));
-        assertEquals("", iut.toString());
+        assertEquals("Grammar[\n"
+            + "nonTerminals: {},\n"
+            + "terminals: {}\n"
+            + "]", iut.toString());
     }
     
-    @SuppressWarnings( "unused" )
     @Test
     public void testSimpleGrammar() {
         iut = new Grammar<Symbols>(Symbols.class);
-        Grammar<Symbols>.Rule r1 = iut.new Rule(Symbols.expr, Symbols.expr, Symbols.OR, Symbols.term),
-                              r2 = iut.new Rule(Symbols.expr, Symbols.term),
-                              r3 = iut.new Rule(Symbols.term, Symbols.term, Symbols.AND, Symbols.factor),
-                              r4 = iut.new Rule(Symbols.term, Symbols.factor),
-                              r5 = iut.new Rule(Symbols.factor, Symbols.NEGATION, Symbols.factor),
-                              r6 = iut.new Rule(Symbols.factor, Symbols.LEFT_PAREN, Symbols.expr, Symbols.RIGHT_PAREN),
-                              r7 = iut.new Rule(Symbols.factor, Symbols.IDENTIFIER);
+        iut.add(iut.new Rule(expr, expr, OR, term));
+        iut.add(iut.new Rule(expr, term));
+        iut.add(iut.new Rule(term, term, AND, factor));
+        iut.add(iut.new Rule(term, factor));
+        iut.add(iut.new Rule(factor, NEGATION, factor));
+        iut.add(iut.new Rule(factor, LEFT_PAREN, expr, RIGHT_PAREN));
+        iut.add(iut.new Rule(factor, IDENTIFIER));
+
+        assertTrue( iut.getNonTerminals().contains( expr ) );
+        assertTrue( iut.getNonTerminals().contains( term ) );
+        assertTrue( iut.getNonTerminals().contains( factor ) );
+        assertFalse( iut.getNonTerminals().contains( AND ) );
+        assertFalse( iut.getNonTerminals().contains( IDENTIFIER ) );
+        assertFalse( iut.getNonTerminals().contains( NEGATION ) );
+        assertFalse( iut.getNonTerminals().contains( LEFT_PAREN ) );
+        assertFalse( iut.getNonTerminals().contains( RIGHT_PAREN ) );
         
-        assertTrue( iut.getNonTerminals().contains( Symbols.expr ) );
-        assertTrue( iut.getNonTerminals().contains( Symbols.term ) );
-        assertTrue( iut.getNonTerminals().contains( Symbols.factor ) );
-        assertFalse( iut.getNonTerminals().contains( Symbols.AND ) );
-        assertFalse( iut.getNonTerminals().contains( Symbols.IDENTIFIER ) );
-        assertFalse( iut.getNonTerminals().contains( Symbols.NEGATION ) );
-        assertFalse( iut.getNonTerminals().contains( Symbols.LEFT_PAREN ) );
-        assertFalse( iut.getNonTerminals().contains( Symbols.RIGHT_PAREN ) );
-        
-        assertFalse( iut.getTerminals().contains( Symbols.expr ) );
-        assertFalse( iut.getTerminals().contains( Symbols.term ) );
-        assertFalse( iut.getTerminals().contains( Symbols.factor ) );
-        assertTrue( iut.getTerminals().contains( Symbols.AND ) );
-        assertTrue( iut.getTerminals().contains( Symbols.IDENTIFIER ) );
-        assertTrue( iut.getTerminals().contains( Symbols.NEGATION ) );
-        assertTrue( iut.getTerminals().contains( Symbols.LEFT_PAREN ) );
-        assertTrue( iut.getTerminals().contains( Symbols.RIGHT_PAREN ) );
-        
-        
+        assertFalse( iut.getTerminals().contains( expr ) );
+        assertFalse( iut.getTerminals().contains( term ) );
+        assertFalse( iut.getTerminals().contains( factor ) );
+        assertTrue( iut.getTerminals().contains( AND ) );
+        assertTrue( iut.getTerminals().contains( IDENTIFIER ) );
+        assertTrue( iut.getTerminals().contains( NEGATION ) );
+        assertTrue( iut.getTerminals().contains( LEFT_PAREN ) );
+        assertTrue( iut.getTerminals().contains( RIGHT_PAREN ) );
+        assertEquals( "Grammar[\n" + 
+                      "Rule[0]: expr ::= expr OR term;\n" +
+                      "Rule[1]: expr ::= term;\n" +
+                      "Rule[2]: term ::= term AND factor;\n" +
+                      "Rule[3]: term ::= factor;\n" +
+                      "Rule[4]: factor ::= NEGATION factor;\n" +
+                      "Rule[5]: factor ::= LEFT_PAREN expr RIGHT_PAREN;\n" +
+                      "Rule[6]: factor ::= IDENTIFIER;\n" +
+                      "nonTerminals: {expr, term, factor},\n" +
+                      "terminals: {NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER}\n" +
+                      "]", iut.toString());
     }
 
 }

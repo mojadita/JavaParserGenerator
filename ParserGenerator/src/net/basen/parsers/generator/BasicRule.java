@@ -68,7 +68,7 @@ public class BasicRule<S extends Symbol<S>>
 	@Override
     public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(m_lhs + ":");  // can raise NullPointerException.
+		sb.append(m_lhs + " ::=");  // can raise NullPointerException.
 		if (isEmpty())
 			sb.append(" /* empty */");
 		else for (S s: this)
