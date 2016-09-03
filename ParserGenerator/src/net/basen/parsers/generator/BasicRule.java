@@ -19,35 +19,22 @@ public class BasicRule<S extends Symbol<S>>
 	extends ArrayList<S>
 	implements Comparable<BasicRule<S>>
 {
-	private static long next_id = 0;
 	private static final long serialVersionUID = 6212726366672386484L;
-	private long m_id;
 	private S m_lhs;
 	
 	public BasicRule() {
-		m_id = next_id++;
 	}
 	
 	@SafeVarargs
 	public BasicRule(S lhs, S... rhs) {
 		super(rhs.length);
-		m_id = next_id++;
 		m_lhs = lhs;
 		for(S s: rhs) add(s);
 	}
 
 	public BasicRule(S lhs, List<S> rhs) {
-		m_id = next_id++;
 		m_lhs = lhs;
 		addAll(rhs);
-	}
-
-	/**
-	 * Getter for the {@code long} {@code id} attribute.
-	 * @return the {@code long} {@code id}.
-	 */
-	public long getId() {
-		return m_id;
 	}
 
 	/**

@@ -42,6 +42,7 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
 
         private void addToMaps() {
             S lft = getLhs();
+            if (lft == null) return;
             m_nonTerminals.add( lft );
             m_terminals.remove( lft );
             for (S s: this) 
@@ -55,7 +56,7 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
             st.add( this );
         }
 
-        @SafeVarargs
+		@SafeVarargs
         public Rule( S lhs, S... rhs ) {
             super( lhs, rhs );
             addToMaps();
