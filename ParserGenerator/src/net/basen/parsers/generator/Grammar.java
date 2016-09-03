@@ -9,11 +9,13 @@ package net.basen.parsers.generator;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Luis Colorado {@code <lcu@basen.net>}
@@ -25,7 +27,7 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
 
     private static final long serialVersionUID = 2764301811517596578L;
     
-    Map<S, Map<String, Rule>> m_rules;
+    Map<S, Set<Rule>> m_rules;
     EnumSet<S> m_terminals;
     EnumSet<S> m_nonTerminals;  // use both as we can have non used symbols in the grammar.
     
@@ -45,12 +47,12 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
             for (S s: this) 
                 if (!m_nonTerminals.contains( s )) 
                     m_terminals.add( s );
-            Map<String, Rule> lm = m_rules.get( lft );
-            if (lm == null) {
-                lm = new TreeMap<String, Grammar<S>.Rule>();
-                m_rules.put( lft, lm );
+            Set<Rule> st = m_rules.get( lft );
+            if (st == null) {
+                st = new TreeSet<Rule>();
+                m_rules.put( lft, st );
             }
-            lm.put( toString(), this );
+            st.add( this );
         }
 
         @SafeVarargs
@@ -63,15 +65,20 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
     public Grammar(Class<S> cl) {
         m_terminals = EnumSet.noneOf( cl );
         m_nonTerminals = EnumSet.noneOf( cl );
-        m_rules = new EnumMap<S, Map<String,Rule>>( cl );
+        m_rules = new EnumMap<S, Set<Rule>>( cl );
     }
     
-    EnumSet<S> getNonTerminals() {
+    public EnumSet<S> getNonTerminals() {
         return m_nonTerminals;
     }
     
-    EnumSet<S> getTerminals() {
+    public EnumSet<S> getTerminals() {
         return m_terminals;
+    }
+    
+    public Set<Rule> getRuleSet(S sym) {
+    	Set<Rule> res = m_rules.get(sym);
+    	return res == null ? Collections.emptySet() : res;
     }
     
     @Override

@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class BasicRule<S extends Symbol<S>> 
 	extends ArrayList<S>
+	implements Comparable<BasicRule<S>>
 {
 	private static long next_id = 0;
 	private static final long serialVersionUID = 6212726366672386484L;
@@ -75,5 +76,27 @@ public class BasicRule<S extends Symbol<S>>
 			sb.append(" " + s);
 		sb.append(";");
 		return sb.toString();
+	}
+
+	/**
+	 * Compares two {@link BasicRule}s in lexicographical order.
+	 * @param o the other object to compare.
+	 * @return the method returns {@code < 0} when {@code this} is
+	 * less than {@code o}, {@code 0} for equality, and {@code > 0}
+	 * if {@code this} is greater than {@code o}
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(BasicRule<S> o) {
+		int res = getLhs().compareTo(o.getLhs());
+		if (res != 0) return res;
+		int i, this_size = size(), other_size = o.size();
+		for (i = 0; i < this_size && i < other_size; i++) {
+			res = get(i).compareTo(o.get(i));
+			if (res != 0) return res;
+		}
+		if (i < this_size) return +1;
+		if (i < other_size) return -1;
+		return 0;
 	}
 }
