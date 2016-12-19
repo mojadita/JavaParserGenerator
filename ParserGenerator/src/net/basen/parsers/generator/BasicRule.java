@@ -15,7 +15,7 @@ import java.util.List;
  * @author Luis Colorado {@code <lcu@basen.net>}.
  *
  */
-public class BasicRule<S extends Symbol<S>> 
+public class BasicRule<S extends Enum<S>> 
 	extends ArrayList<S>
 	implements Comparable<BasicRule<S>>
 {
@@ -86,4 +86,4 @@ public class BasicRule<S extends Symbol<S>>
 		if (i < other_size) return -1;
 		return 0;
 	}
-}
+} /* BasicRule */

@@ -12,7 +12,7 @@ package net.basen.parsers.generator;
  * @author Luis Colorado {@code <lcu@basen.net>}.
  *
  */
-public interface Symbol<T extends Symbol<T>>
+public interface Symbol<T extends Enum<T>>
 	extends Comparable<T>
 {
     // empty

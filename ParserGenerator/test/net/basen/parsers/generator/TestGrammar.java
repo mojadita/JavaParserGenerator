@@ -7,18 +7,24 @@
  */
 package net.basen.parsers.generator;
 
-import org.junit.*;
-
-import net.basen.parsers.generator.Grammar.Rule;
-
-import static org.hamcrest.collection.IsIn.*;
-import static org.hamcrest.collection.IsEmptyCollection.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-import java.util.Set;
-
-import static net.basen.parsers.generator.Symbols.*;
+import static net.basen.parsers.generator.Symbols.AND;
+import static net.basen.parsers.generator.Symbols.IDENTIFIER;
+import static net.basen.parsers.generator.Symbols.LEFT_PAREN;
+import static net.basen.parsers.generator.Symbols.NEGATION;
+import static net.basen.parsers.generator.Symbols.OR;
+import static net.basen.parsers.generator.Symbols.RIGHT_PAREN;
+import static net.basen.parsers.generator.Symbols.expr;
+import static net.basen.parsers.generator.Symbols.factor;
+import static net.basen.parsers.generator.Symbols.term;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static org.hamcrest.collection.IsIn.in;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 /**
  * 
@@ -67,7 +73,8 @@ public class TestGrammar {
         assertThat( NEGATION, is(in(iut.getTerminals())) );
         assertThat( LEFT_PAREN, is(in(iut.getTerminals())) );
         assertThat( RIGHT_PAREN, is(in(iut.getTerminals())) );
-        assertThat( iut.toString(), is(equalTo("Grammar[\n" + 
+        assertThat( iut.toString(), is(equalTo(
+                      "Grammar[\n" + 
                       "Rule[0]: expr ::= expr OR term;\n" +
                       "Rule[1]: expr ::= term;\n" +
                       "Rule[2]: term ::= term AND factor;\n" +
@@ -147,5 +154,4 @@ public class TestGrammar {
     	
     }
 
-}
- /* TestGrammar */
+} /* TestGrammar */

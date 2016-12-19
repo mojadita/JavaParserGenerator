@@ -20,8 +20,8 @@ import java.util.TreeSet;
 /**
  * @author Luis Colorado {@code <lcu@basen.net>}
  */
-public class Grammar<S extends Enum<S>&Symbol<S>>
-    extends ArrayList<BasicRule<S>>
+public class Grammar<S extends Enum<S>>
+    extends ArrayList<Grammar<S>.Rule>
     implements Serializable 
 {
 
@@ -93,7 +93,7 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
         sb.append( "nonTerminals:" );
         i = 0;
         sb.append( " {" );
-        for (Symbol<S> s: m_nonTerminals) {
+        for (S s: m_nonTerminals) {
             sb.append( i++ == 0 ? "" : ", " );
             sb.append( s.toString() );
         }
@@ -101,7 +101,7 @@ public class Grammar<S extends Enum<S>&Symbol<S>>
             + "terminals:" );
         i = 0;
         sb.append(" {");
-        for (Symbol<S> s: m_terminals) {
+        for (S s: m_terminals) {
             sb.append( i++ == 0 ? "" : ", " );
             sb.append( s.toString() );
         }
