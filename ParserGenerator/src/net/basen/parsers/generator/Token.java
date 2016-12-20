@@ -41,7 +41,9 @@ public class Token<S extends Enum<S>, V>
     
     @Override
     public V setValue( V value ) {
-        return null;
+        V old_value = m_value;
+        m_value = value;
+        return old_value;
     }
     
 } /* Token */

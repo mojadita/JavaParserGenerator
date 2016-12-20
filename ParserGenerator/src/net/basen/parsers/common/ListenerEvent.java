@@ -10,7 +10,7 @@ package net.basen.parsers.common;
 import net.basen.parsers.generator.Grammar;
 import net.basen.parsers.generator.Grammar.Rule;
 import net.basen.parsers.parser.CompiledGrammar;
-import net.basen.parsers.parser.ParseTree;
+import net.basen.parsers.parser.ParseNode;
 
 
 /**
@@ -24,15 +24,15 @@ import net.basen.parsers.parser.ParseTree;
  */
 public class ListenerEvent<S extends Enum<S>> {
     private final CompiledGrammar<S>.State.Transition m_transition;
-    private final ParseTree<S> m_parseTree;
+    private final ParseNode<S> m_parseTree;
     
     /**
      * Default constructor for this class.
      * @param transition is the {@link CompiledGrammar.State.Transition} that
      * generated this event.
-     * @param parseTree is the {@link ParseTree} accepted up to this event.
+     * @param parseTree is the {@link ParseNode} accepted up to this event.
      */
-    public ListenerEvent(CompiledGrammar<S>.State.Transition transition, ParseTree<S> parseTree) {
+    public ListenerEvent(CompiledGrammar<S>.State.Transition transition, ParseNode<S> parseTree) {
         m_transition = transition;
         m_parseTree = parseTree;
     }
@@ -49,7 +49,7 @@ public class ListenerEvent<S extends Enum<S>> {
      * Getter for the {@code ParseTree} {@code parseTree} attribute.
      * @return the {@code ParseTree} value of the {@code parseTree} attribute.
      */
-    public ParseTree<S> getParseTree() {
+    public ParseNode<S> getParseTree() {
         return m_parseTree;
     }
     

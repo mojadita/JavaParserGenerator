@@ -5,11 +5,10 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.generator;
+package net.basen.parsers.parser;
 
 
 enum Symbols {
 	expr, term, factor, 
 	NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER,
-	unused,
 } /* Symbols */

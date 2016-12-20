@@ -8,6 +8,7 @@
 package net.basen.parsers.parser;
 
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -16,7 +17,6 @@ import java.util.Map;
 import net.basen.parsers.common.Listener;
 import net.basen.parsers.common.ListenerEvent;
 import net.basen.parsers.generator.BasicRule;
-import net.basen.parsers.generator.Symbol;
 import net.basen.parsers.generator.Token;
 
 /**
@@ -112,7 +112,7 @@ public class CompiledGrammar<S extends Enum<S>>
                 m_listeners.add( theListener );
             }
             
-            public void fireAcceptListenerEvent(ParseTree<S> parseTree) {
+            public void fireAcceptListenerEvent(ParseNode<S> parseTree) {
                 ListenerEvent<S> theEvent = new ListenerEvent<S>( this, parseTree );
                 for (Listener<S> l: m_listeners)
                     l.accept( theEvent );
@@ -171,43 +171,24 @@ public class CompiledGrammar<S extends Enum<S>>
         return m_states;
     }
     
-    private class StackNode<V> extends Token<S, V> {
-        private static final long serialVersionUID = 8410687900735504584L;
-        
-        public final StackNode<?> m_next;
-
-        public StackNode(S key, V value, StackNode<?> top) {
-            super( key, value );
-            m_next = top;
-        }
-
-        /**
-         * Getter for the {@code StackNode<?>} {@code next} attribute.
-         * @return the {@code StackNode<?>} value of the {@code next} attribute.
-         */
-        public StackNode<?> getNext() {
-            return m_next;
-        }
-    } 
-    
     /**
      * Method to parse some {@link CompiledGrammar} over some input and
-     * get a {@link ParseTree} of the input.
+     * get a {@link ParseNode} of the input.
      * @param input {@link Iterator} representing the input source to be
      * parsed for.
      * @param initial  is the main root symbol of the parsing.  This identifies
      * the initial symbol of the Grammar. As a grammar needs the initial symbol
      * only to initialize the state acceptor, it is passed here as a parameter, 
      * so we can use different starting points to parse different things.
-     * @return The {@link ParseTree} with the input structure.
+     * @return The {@link ParseNode} with the input structure.
      * @throws ParsingError If parsing fails.
      */
-    public ParseTree parse(Iterator<Token<S, ?>> input, State st, S target) throws ParsingError {
-        
-        StackNode<?> top = null;
-        
+    public ParseNode<S> parse(Iterator<Token<S, ?>> input, State st, S target) throws ParsingError {
+        ArrayDeque<Token<S, ?>> stack = new ArrayDeque<Token<S, ?>>();        
+
         while(input.hasNext()) {
             Token<S, ?> symbol = input.next();
+            
             
             
             
@@ -215,7 +196,7 @@ public class CompiledGrammar<S extends Enum<S>>
         // we must have the target symbol on top of the stack.
         if (top == null || top.getNext() != null || top.getKey() != target)
             throw new ParsingError("Input exhausted while parsing");
-        return null;
+        return top;
     }
     
 } /* CompiledGrammar */

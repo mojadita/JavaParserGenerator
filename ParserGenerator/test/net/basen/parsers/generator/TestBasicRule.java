@@ -23,7 +23,7 @@ import org.junit.Test;
  * @author  {@code <>}.
  *
  */
-public class TestRule {
+public class TestBasicRule {
 	
 	BasicRule<Symbols> iut;
 	

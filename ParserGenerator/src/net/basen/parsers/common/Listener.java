@@ -8,7 +8,7 @@
 package net.basen.parsers.common;
 
 import net.basen.parsers.generator.Grammar;
-import net.basen.parsers.parser.ParseTree;
+import net.basen.parsers.parser.ParseNode;
 
 
 
@@ -24,7 +24,7 @@ public interface Listener<S extends Enum<S>> {
      * 
      * @param event is the {@link ListenerEvent} that triggers the
      * accept call. It is composed of the {@link Transition} that triggers
-     * the call and the {@link ParseTree} collected up to this parsing
+     * the call and the {@link ParseNode} collected up to this parsing
      * state.  From this information, and navigating, all the Grammar info
      * can be obtained.
      */
