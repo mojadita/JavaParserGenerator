@@ -8,7 +8,6 @@ package net.basen.parsers.generator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author Luis Colorado {@code <lcu@basen.net>}.
