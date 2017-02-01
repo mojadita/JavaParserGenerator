@@ -5,12 +5,12 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.common;
+package es.lcssl.parsers.common;
 
-import net.basen.parsers.generator.Grammar;
-import net.basen.parsers.generator.Grammar.Rule;
-import net.basen.parsers.parser.CompiledGrammar;
-import net.basen.parsers.parser.ParseNode;
+import es.lcssl.parsers.grammars.Grammar;
+import es.lcssl.parsers.grammars.Grammar.Rule;
+import es.lcssl.parsers.grammars.compiler.CompiledGrammar;
+import es.lcssl.parsers.grammars.compiler.ParseNode;
 
 
 /**

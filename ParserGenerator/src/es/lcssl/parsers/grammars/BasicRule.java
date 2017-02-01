@@ -4,7 +4,7 @@
  * 2016 LUIS COLORADO. All rights reserved.
  */
 
-package net.basen.parsers.generator;
+package es.lcssl.parsers.grammars;
 
 import java.util.ArrayList;
 import java.util.Collection;

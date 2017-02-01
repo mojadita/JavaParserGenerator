@@ -5,7 +5,7 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.parser;
+package es.lcssl.parsers.grammars.compiler;
 
 import java.io.Serializable;
 import java.util.ArrayDeque;
@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import net.basen.parsers.common.Listener;
-import net.basen.parsers.common.ListenerEvent;
-import net.basen.parsers.generator.BasicRule;
-import net.basen.parsers.generator.Grammar;
-import net.basen.parsers.generator.Token;
+
+import es.lcssl.parsers.common.Listener;
+import es.lcssl.parsers.common.ListenerEvent;
+import es.lcssl.parsers.grammars.BasicRule;
+import es.lcssl.parsers.grammars.Grammar;
+import es.lcssl.parsers.grammars.Token;
 
 /**
  * This class allows to execute a compiled parser over a {@link Iterable}
@@ -89,8 +90,9 @@ public class CompiledGrammar<S extends Enum<S>>
                 m_listeners = new ArrayList<Listener<S>>( 0 );
             }
 
-            public Transition( S input, State to, BasicRule<S> rule ) {
+            public Transition( S input, TransitionType type, State to, BasicRule<S> rule ) {
                 m_input = input;
+                m_type = type;
                 m_to = to;
                 m_rule = rule;
                 m_listeners = new ArrayList<Listener<S>>( 0 );
@@ -158,10 +160,8 @@ public class CompiledGrammar<S extends Enum<S>>
             public String toString() {
                 StringBuffer sb = new StringBuffer("on [");
                 sb.append( m_input );
-                if (m_terminals.contains( m_input )) {
-                    sb.append(" shift");
-                }
-                if (m_)
+                sb.append( "]" );
+                return sb.toString();
             }
         } // public class Transition
 
@@ -232,12 +232,8 @@ public class CompiledGrammar<S extends Enum<S>>
 
         while( input.hasNext() ) {
             Token<S, ?> symbol = input.next();
-            if (symbol.)
 
         }
-        // we must have the target symbol on top of the stack.
-        if( top == null || top.getNext() != null || top.getKey() != target )
-            throw new ParsingError( "Input exhausted while parsing" );
-        return top;
+        return null;
     }
 } /* CompiledGrammar */

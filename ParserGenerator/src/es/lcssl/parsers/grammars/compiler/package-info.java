@@ -9,4 +9,4 @@
  * 
  * @author Luis Colorado {@code <lcu@basen.net>}
  */
-package net.basen.parsers.common;
+package es.lcssl.parsers.grammars.compiler;

@@ -6,18 +6,19 @@
  * Disclaimer: (C) 2016 LUIS COLORADO.  All rights reserved.
  */
 
-package net.basen.parsers.generator;
+package es.lcssl.parsers.grammars;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.*;
 import static org.hamcrest.number.OrderingComparison.*;
 import static org.hamcrest.CoreMatchers.*;
-import static net.basen.parsers.generator.Symbols.*;
+import static es.lcssl.parsers.grammars.Symbols.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import es.lcssl.parsers.grammars.BasicRule;
 
 /**
  * @author  {@code <>}.

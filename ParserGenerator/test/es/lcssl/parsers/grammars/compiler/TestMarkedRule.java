@@ -4,19 +4,22 @@
  * 2016 LUIS COLORADO. All rights reserved.
  */
 
-package net.basen.parsers.parser;
+package es.lcssl.parsers.grammars.compiler;
 
-import static net.basen.parsers.parser.Symbols.AND;
-import static net.basen.parsers.parser.Symbols.IDENTIFIER;
-import static net.basen.parsers.parser.Symbols.LEFT_PAREN;
-import static net.basen.parsers.parser.Symbols.OR;
-import static net.basen.parsers.parser.Symbols.RIGHT_PAREN;
-import static net.basen.parsers.parser.Symbols.expr;
-import static net.basen.parsers.parser.Symbols.term;
+import static es.lcssl.parsers.grammars.compiler.Symbols.AND;
+import static es.lcssl.parsers.grammars.compiler.Symbols.IDENTIFIER;
+import static es.lcssl.parsers.grammars.compiler.Symbols.LEFT_PAREN;
+import static es.lcssl.parsers.grammars.compiler.Symbols.OR;
+import static es.lcssl.parsers.grammars.compiler.Symbols.RIGHT_PAREN;
+import static es.lcssl.parsers.grammars.compiler.Symbols.expr;
+import static es.lcssl.parsers.grammars.compiler.Symbols.term;
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
-import net.basen.parsers.generator.Grammar;
+
+import es.lcssl.parsers.grammars.Grammar;
+import es.lcssl.parsers.grammars.compiler.RuleMarks;
 
 /**
  * @author {@code <>}.

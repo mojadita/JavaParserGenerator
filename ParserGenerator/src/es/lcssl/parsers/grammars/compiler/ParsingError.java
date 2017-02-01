@@ -5,7 +5,7 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.parser;
+package es.lcssl.parsers.grammars.compiler;
 
 /**
  * Parsing error.

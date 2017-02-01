@@ -9,4 +9,4 @@
  * 
  * @author Luis Colorado {@code <lcu@basen.net>}
  */
-package net.basen.parsers.parser;
+package es.lcssl.parsers.common;

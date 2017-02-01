@@ -5,18 +5,18 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.generator;
+package es.lcssl.parsers.grammars;
 
-import static net.basen.parsers.generator.Symbols.AND;
-import static net.basen.parsers.generator.Symbols.IDENTIFIER;
-import static net.basen.parsers.generator.Symbols.LEFT_PAREN;
-import static net.basen.parsers.generator.Symbols.NEGATION;
-import static net.basen.parsers.generator.Symbols.OR;
-import static net.basen.parsers.generator.Symbols.RIGHT_PAREN;
-import static net.basen.parsers.generator.Symbols.expr;
-import static net.basen.parsers.generator.Symbols.factor;
-import static net.basen.parsers.generator.Symbols.term;
-import static net.basen.parsers.generator.Symbols.unused;
+import static es.lcssl.parsers.grammars.Symbols.AND;
+import static es.lcssl.parsers.grammars.Symbols.IDENTIFIER;
+import static es.lcssl.parsers.grammars.Symbols.LEFT_PAREN;
+import static es.lcssl.parsers.grammars.Symbols.NEGATION;
+import static es.lcssl.parsers.grammars.Symbols.OR;
+import static es.lcssl.parsers.grammars.Symbols.RIGHT_PAREN;
+import static es.lcssl.parsers.grammars.Symbols.expr;
+import static es.lcssl.parsers.grammars.Symbols.factor;
+import static es.lcssl.parsers.grammars.Symbols.term;
+import static es.lcssl.parsers.grammars.Symbols.unused;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -26,11 +26,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import es.lcssl.parsers.grammars.Grammar;
+
 /**
- * 
+ * Test class for {@link Grammar} class.
  * @author Luis Colorado {@code <lcu@basen.net>}
  */
 public class TestGrammar {
@@ -55,8 +58,7 @@ public class TestGrammar {
     public void testInitialProperties() {
         iut = new Grammar<Symbols>( Symbols.class );
         assertTrue( iut.getNonTerminals().isEmpty() );
-        assertEquals( "Grammar[\n" + "nonTerminals: {},\n" + "terminals: {}\n"
-            + "]", iut.toString() );
+        assertEquals( "Grammar[\n" + "]", iut.toString() );
     }
 
     @Test
@@ -81,15 +83,16 @@ public class TestGrammar {
         assertThat( RIGHT_PAREN, is( in( iut.getTerminals() ) ) );
         assertThat( iut.toString(),
                     is( equalTo( "Grammar[\n"
-                        + "Rule[0]: expr ::= expr OR term;\n"
-                        + "Rule[1]: expr ::= term;\n"
-                        + "Rule[2]: term ::= term AND factor;\n"
-                        + "Rule[3]: term ::= factor;\n"
-                        + "Rule[4]: factor ::= NEGATION factor;\n"
-                        + "Rule[5]: factor ::= LEFT_PAREN expr RIGHT_PAREN;\n"
-                        + "Rule[6]: factor ::= IDENTIFIER;\n"
-                        + "nonTerminals: {expr, term, factor},\n"
-                        + "terminals: {NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER}\n"
+                    	+ "Rules:\n"
+                        + "\tR[0]: <expr> ::= <expr> OR <term>;\n"
+                        + "\tR[1]: <expr> ::= <term>;\n"
+                        + "\tR[2]: <term> ::= <term> AND <factor>;\n"
+                        + "\tR[3]: <term> ::= <factor>;\n"
+                        + "\tR[4]: <factor> ::= NEGATION <factor>;\n"
+                        + "\tR[5]: <factor> ::= LEFT_PAREN <expr> RIGHT_PAREN;\n"
+                        + "\tR[6]: <factor> ::= IDENTIFIER;\n"
+                        + "Nonterminals: {expr, term, factor}\n"
+                        + "Terminals: {NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER}\n"
                         + "]" ) ) );
         assertThat( r0, is( in( iut.getRuleSet( expr ) ) ) );
         assertThat( r1, is( in( iut.getRuleSet( expr ) ) ) );
@@ -126,15 +129,16 @@ public class TestGrammar {
         assertThat( RIGHT_PAREN, is( in( iut.getTerminals() ) ) );
         assertThat( iut.toString(),
                     is( equalTo( "Grammar[\n"
-                        + "Rule[0]: expr ::= expr OR term;\n"
-                        + "Rule[1]: expr ::= term;\n"
-                        + "Rule[2]: term ::= term AND factor;\n"
-                        + "Rule[3]: term ::= factor;\n"
-                        + "Rule[4]: factor ::= NEGATION factor;\n"
-                        + "Rule[5]: factor ::= LEFT_PAREN expr RIGHT_PAREN;\n"
-                        + "Rule[6]: factor ::= IDENTIFIER;\n"
-                        + "nonTerminals: {expr, term, factor},\n"
-                        + "terminals: {NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER}\n"
+                    	+ "Rules:\n"
+                        + "\tR[0]: <expr> ::= <expr> OR <term>;\n"
+                        + "\tR[1]: <expr> ::= <term>;\n"
+                        + "\tR[2]: <term> ::= <term> AND <factor>;\n"
+                        + "\tR[3]: <term> ::= <factor>;\n"
+                        + "\tR[4]: <factor> ::= NEGATION <factor>;\n"
+                        + "\tR[5]: <factor> ::= LEFT_PAREN <expr> RIGHT_PAREN;\n"
+                        + "\tR[6]: <factor> ::= IDENTIFIER;\n"
+                        + "Nonterminals: {expr, term, factor}\n"
+                        + "Terminals: {NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER}\n"
                         + "]" ) ) );
         assertThat( r0, is( in( iut.getRuleSet( expr ) ) ) );
         assertThat( r1, is( in( iut.getRuleSet( expr ) ) ) );

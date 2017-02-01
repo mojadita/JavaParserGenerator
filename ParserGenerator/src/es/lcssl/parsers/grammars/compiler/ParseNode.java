@@ -5,11 +5,12 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.parser;
+package es.lcssl.parsers.grammars.compiler;
 
 import java.util.ArrayList;
-import net.basen.parsers.generator.Grammar.Rule;
-import net.basen.parsers.generator.Token;
+
+import es.lcssl.parsers.grammars.Token;
+import es.lcssl.parsers.grammars.Grammar.Rule;
 
 /**
  * This is the final result of a parse. The syntax tree describing the input.

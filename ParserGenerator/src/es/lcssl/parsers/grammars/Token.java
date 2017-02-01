@@ -5,11 +5,12 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.generator;
+package es.lcssl.parsers.grammars;
 
 import java.io.Serializable;
 import java.util.Map.Entry;
-import net.basen.parsers.parser.CompiledGrammar;
+
+import es.lcssl.parsers.grammars.compiler.CompiledGrammar;
 
 /**
  * This is a token, as returned by a scanner to be feed into

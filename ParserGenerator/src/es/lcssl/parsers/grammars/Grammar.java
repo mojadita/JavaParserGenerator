@@ -5,7 +5,7 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.generator;
+package es.lcssl.parsers.grammars;
 
 import java.io.Serializable;
 import java.util.Collections;

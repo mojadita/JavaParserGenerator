@@ -5,11 +5,12 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.parser;
+package es.lcssl.parsers.grammars.compiler;
 
 import java.util.Iterator;
 import java.util.TreeSet;
-import net.basen.parsers.generator.BasicRule;
+
+import es.lcssl.parsers.grammars.BasicRule;
 
 /**
  * This represents a marking on a {@link BasicRule}, representing parsing state.

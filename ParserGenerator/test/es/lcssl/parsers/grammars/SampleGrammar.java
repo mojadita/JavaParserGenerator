@@ -5,15 +5,16 @@
  *
  * All rights reserved.
  */
-package net.basen.parsers.generator;
+package es.lcssl.parsers.grammars;
 
-import static net.basen.parsers.generator.SampleGrammar.Symbols.COMMA;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.IDENT;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.LEFT_PAREN;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.RIGHT_PAREN;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.expr;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.list;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.start;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.COMMA;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.IDENT;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.LEFT_PAREN;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.RIGHT_PAREN;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.expr;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.list;
+import static es.lcssl.parsers.grammars.SampleGrammar.Symbols.start;
+import es.lcssl.parsers.grammars.Grammar;
 
 /**
  * Sample grammar for the compilation tests.
