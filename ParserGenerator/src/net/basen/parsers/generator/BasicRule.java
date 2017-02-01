@@ -45,7 +45,7 @@ public class BasicRule<S extends Enum<S>>
         return m_lhs;
     }
 
-/**
+    /**
 	 * Setter for the {@code S} {@code lhs.
 	 * @param lhs the {@code S} {@code lhs} to set.
 	 */
@@ -55,8 +55,8 @@ public class BasicRule<S extends Enum<S>>
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append( m_lhs + " ::=" ); // can raise NullPointerException.
+        StringBuffer sb = new StringBuffer( m_lhs.toString() ); // can raise NullPointerException.
+        sb.append( " ::=" );
         if( isEmpty() )
             sb.append( " /* empty */" );
         else
@@ -97,4 +97,5 @@ public class BasicRule<S extends Enum<S>>
             return -1;
         return 0;
     }
+    
 } /* BasicRule */

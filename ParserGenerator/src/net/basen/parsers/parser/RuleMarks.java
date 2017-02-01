@@ -34,9 +34,8 @@ public class RuleMarks<S extends Enum<S>>
 
     public RuleMarks<S> addMarks( Integer... theMarks ) {
         for( Integer i: theMarks ) {
-            if( i < 0 || i >= m_rule.size() )
+            if( i < 0 || i > m_rule.size() )
                 throw new ArrayIndexOutOfBoundsException( i );
-            System.out.println( this + ": adding new mark [" + i + "]" );
             add( i );
         }
         return this;
@@ -44,9 +43,8 @@ public class RuleMarks<S extends Enum<S>>
 
     public RuleMarks<S> deleteMarks( Integer... theMarks ) {
         for( Integer i: theMarks ) {
-            if( i < 0 || i >= size() )
+            if( i < 0 || i > size() )
                 throw new ArrayIndexOutOfBoundsException( i );
-            System.out.println( this + ": deleting mark [" + i + "]" );
             remove( i );
         }
         return this;
@@ -73,7 +71,7 @@ public class RuleMarks<S extends Enum<S>>
                 sb.append( contains( i++ ) ? " . " : " " );
                 sb.append( s );
             }
-        sb.append( ";" );
+        sb.append( contains(i) ? " . ;" : ";" ); // past last element
         return sb.toString();
     }
 

@@ -35,11 +35,11 @@ public class TestBasicRule {
 		assertEquals("expr ::= /* empty */;", iut.toString());
 	}
 	
-	@Test
+	@Test(expected=NullPointerException.class)
 	public void testNoLhs() {
 		iut = new BasicRule<Symbols>();
 		assertNotNull(iut);
-		assertEquals("null ::= /* empty */;", iut.toString());
+		assertEquals("null ::= /* empty */;", iut.toString()); // throws the exception.
 	}
 	
 	@Test

@@ -32,13 +32,13 @@ public class Grammar<S extends Enum<S>>
 
     private static final long serialVersionUID = 2764301811517596578L;
 
-    private final Class<S> m_symbolClass;
+    protected final Class<S> m_symbolClass;
 
-    private final Map<S, Set<Rule>> m_rules;
+    protected final Map<S, Set<Rule>> m_rules;
 
-    private final EnumSet<S> m_terminals; // the set of terminals for this grammar.
+    protected final EnumSet<S> m_terminals; // the set of terminals for this grammar.
 
-    private final EnumSet<S> m_nonTerminals; // use both as we can have non used symbols in the grammar.
+    protected final EnumSet<S> m_nonTerminals; // use both as we can have non used symbols in the grammar.
 
     /**
      * Rule extends the behaviour of {@link BasicRule} by forcing all rules in

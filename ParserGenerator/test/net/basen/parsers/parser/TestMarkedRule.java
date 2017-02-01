@@ -30,11 +30,31 @@ public class TestMarkedRule {
 
     Grammar<Symbols>.Rule r0, r1;
 
+    RuleMarks<Symbols>[] array;
+
+    @SuppressWarnings( "unchecked" )
     @Before
     public void before() {
         grammar = new Grammar<Symbols>( Symbols.class );
         grammar.add( r0 = grammar.new Rule( expr, expr, OR, term ) );
         grammar.add( r1 = grammar.new Rule( expr, term ) );
+
+        array =
+            new RuleMarks[] { new RuleMarks<Symbols>( r0 ).addMarks(),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1, 2 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1, 2, 3 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0, 2 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0, 2, 3 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 0, 3 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 1 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 1, 2 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 1, 2, 3 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 1, 3 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 2 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 2, 3 ),
+                new RuleMarks<Symbols>( r0 ).addMarks( 3 ), };
     }
 
     @Test
@@ -43,6 +63,13 @@ public class TestMarkedRule {
         assertNotNull( iut );
         iut.addMarks( 0 );
         assertEquals( "expr ::= . expr OR term;", iut.toString() );
+    }
+
+    @Test
+    public void testFinalMark() {
+        iut = new RuleMarks<Symbols>( r0 );
+        iut.addMarks( r0.size() );
+        assertEquals( "expr ::= expr OR term . ;", iut.toString() );
     }
 
     @Test
@@ -85,24 +112,15 @@ public class TestMarkedRule {
                                                       RIGHT_PAREN ) ).addMarks( 3,
                                                                                 2,
                                                                                 5 );
-        assertEquals( "expr ::= IDENTIFIER LEFT_PAREN . expr . RIGHT_PAREN AND . LEFT_PAREN expr RIGHT_PAREN;",
+        assertEquals( "expr ::= IDENTIFIER LEFT_PAREN . expr . RIGHT_PAREN AND . "
+                          + "LEFT_PAREN expr RIGHT_PAREN;",
                       rm0.toString() );
     }
 
     @Test
     public void testMarkOrder() {
-        @SuppressWarnings( "unchecked" )
-        RuleMarks<Symbols>[] array =
-            new RuleMarks[] { new RuleMarks<Symbols>( r0 ).addMarks(),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1, 2 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0, 2 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 1 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 1, 2 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 2 ), };
-        for( int i = 0; i < 8; i++ ) {
-            for( int j = 0; j < 8; j++ ) {
+        for( int i = 0; i < array.length; i++ ) {
+            for( int j = 0; j < array.length; j++ ) {
                 if( i < j ) {
                     assertTrue( "array[" + i + "] < array[" + j + "] failed",
                                 array[i].compareTo( array[j] ) < 0 );
@@ -119,21 +137,11 @@ public class TestMarkedRule {
 
     @Test
     public void testEquals() {
-        @SuppressWarnings( "unchecked" )
-        RuleMarks<Symbols>[] array =
-            new RuleMarks[] { new RuleMarks<Symbols>( r0 ).addMarks(),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0, 1, 2 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 0, 2 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 1 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 1, 2 ),
-                new RuleMarks<Symbols>( r0 ).addMarks( 2 ), };
-        for( int i = 0; i < 8; i++ ) {
-            for( int j = i; j < 8; j++ ) {
-                String label = "array["+i+"].equals(array["+j+"])";
+        for( int i = 0; i < array.length; i++ ) {
+            for( int j = i; j < array.length; j++ ) {
+                String label = "array[" + i + "].equals(array[" + j + "])";
                 if( i == j ) {
-                    assertTrue(  label, array[i].equals( array[j] ) );
+                    assertTrue( label, array[i].equals( array[j] ) );
                 } else {
                     assertFalse( label, array[i].equals( array[j] ) );
                 }

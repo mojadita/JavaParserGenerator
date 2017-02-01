@@ -11,12 +11,16 @@ import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import net.basen.parsers.common.Listener;
 import net.basen.parsers.common.ListenerEvent;
 import net.basen.parsers.generator.BasicRule;
+import net.basen.parsers.generator.Grammar;
 import net.basen.parsers.generator.Token;
 
 /**
@@ -29,15 +33,30 @@ import net.basen.parsers.generator.Token;
  * @author Luis Colorado {@code <lcu@basen.net>}
  */
 public class CompiledGrammar<S extends Enum<S>>
-    implements Serializable {
+    extends Grammar<S> {
 
     private static final long serialVersionUID = -2450808883964818073L;
+    
+    public enum TransitionType {
+        SHIFT, // push the next symbol to the stack.
+        REDUCE, // reduce a rule, pop all the right hand side symbols and push the lhs.
+        ACCEPT, // accept parsed input.
+        ERROR, // produce an error on recent input.
+    }
 
-    private final Class<S> m_symbolClass;
+    /**
+     * Set of initial symbols {@code <S>} for key symbol.
+     */
+    protected final Map<S, Set<S>> m_initials;
 
-    private int m_nextId = 0;
+    /**
+     * Set of followers to key symbol.
+     */
+    protected final Map<S, Set<S>> m_followers;
 
-    private final List<State> m_states;
+    private final TreeSet<State> m_statesSet;
+
+    private final ArrayList<State> m_states;
 
     /**
      * This class represents a {@code CompiledGrammar} {@link State}.
@@ -45,7 +64,7 @@ public class CompiledGrammar<S extends Enum<S>>
      * @author Luis Colorado {@code <lcu@basen.net>}
      */
     public class State {
-        private final int id = m_nextId++;
+        private final int id = m_states.size();
 
         private final Map<S, Transition> m_nextMap =
             new EnumMap<S, Transition>( m_symbolClass );
@@ -53,6 +72,8 @@ public class CompiledGrammar<S extends Enum<S>>
         public class Transition {
 
             private final S m_input;
+            
+            private final TransitionType m_type;
 
             private final State m_to;
 
@@ -60,8 +81,9 @@ public class CompiledGrammar<S extends Enum<S>>
 
             private final List<Listener<S>> m_listeners;
 
-            public Transition( S input, State to ) {
+            public Transition( S input, TransitionType type, State to ) {
                 m_input = input;
+                m_type = type;
                 m_to = to;
                 m_rule = null;
                 m_listeners = new ArrayList<Listener<S>>( 0 );
@@ -132,6 +154,15 @@ public class CompiledGrammar<S extends Enum<S>>
                 for( Listener<S> l: m_listeners )
                     l.accept( theEvent );
             }
+
+            public String toString() {
+                StringBuffer sb = new StringBuffer("on [");
+                sb.append( m_input );
+                if (m_terminals.contains( m_input )) {
+                    sb.append(" shift");
+                }
+                if (m_)
+            }
         } // public class Transition
 
         public State() {
@@ -160,27 +191,12 @@ public class CompiledGrammar<S extends Enum<S>>
         }
     } // public class State
 
-    public CompiledGrammar( Class<S> symbolClass ) {
-        m_symbolClass = symbolClass;
-        m_states = new ArrayList<State>();
-    }
-
-    /**
-     * Getter for the {@code Class<S>} {@code symbolClass} attribute.
-     * 
-     * @return the {@code Class<S>} value of the {@code symbolClass} attribute.
-     */
-    public Class<S> getSymbolClass() {
-        return m_symbolClass;
-    }
-
-    /**
-     * Getter for the {@code int} {@code nextId} attribute.
-     * 
-     * @return the {@code int} value of the {@code nextId} attribute.
-     */
-    public int getNextId() {
-        return m_nextId;
+    protected CompiledGrammar( Class<S> symbolClass ) {
+        super( symbolClass );
+        m_initials = new EnumMap<S, Set<S>>( m_symbolClass );
+        m_followers = new EnumMap<S, Set<S>>( m_symbolClass );
+        m_statesSet = new TreeSet<State>();
+        m_states = new ArrayList<State>(); // empty state table.
     }
 
     /**
@@ -195,7 +211,7 @@ public class CompiledGrammar<S extends Enum<S>>
     /**
      * Method to parse some {@link CompiledGrammar} over some input and get a
      * {@link ParseNode} tree corresponding to the input. This is an automaton
-     * based, bottom-up, non-recursive parser.  
+     * based, bottom-up, non-recursive parser.
      * 
      * @param input
      *            {@link Iterator} representing the input source to be parsed
@@ -224,5 +240,4 @@ public class CompiledGrammar<S extends Enum<S>>
             throw new ParsingError( "Input exhausted while parsing" );
         return top;
     }
-
 } /* CompiledGrammar */
