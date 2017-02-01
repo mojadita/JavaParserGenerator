@@ -27,25 +27,16 @@ public class TestBasicRule {
 	
 	BasicRule<Symbols> iut;
 	
-	@Test
-	public void testEmptyConstructor() {
-		iut = new BasicRule<Symbols>();
-		assertNotNull(iut);
-		iut.setLhs(expr);
-		assertEquals("expr ::= /* empty */;", iut.toString());
-	}
-	
 	@Test(expected=NullPointerException.class)
 	public void testNoLhs() {
-		iut = new BasicRule<Symbols>();
+		iut = new BasicRule<Symbols>(null);
 		assertNotNull(iut);
 		assertEquals("null ::= /* empty */;", iut.toString()); // throws the exception.
 	}
 	
 	@Test
 	public void testPopulate1() {
-		iut = new BasicRule<Symbols>();
-		iut.setLhs(expr);
+		iut = new BasicRule<Symbols>(expr);
 		iut.add(expr);
 		iut.add(OR);
 		iut.add(term);

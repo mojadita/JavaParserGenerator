@@ -18,20 +18,27 @@ public class BasicRule<S extends Enum<S>>
     implements Comparable<BasicRule<S>> {
     private static final long serialVersionUID = 6212726366672386484L;
 
-    private S m_lhs;
-
-    public BasicRule() {
-    }
+    private final S m_lhs;
 
     @SafeVarargs
     public BasicRule( S lhs, S... rhs ) {
         super( rhs.length );
+        if( lhs == null )
+            throw new NullPointerException( "lhs cannot be null" );
         m_lhs = lhs;
-        for( S s: rhs )
+        int i = 0;
+        for( S s: rhs ) {
+            if( s == null )
+                throw new NullPointerException( "parameter rhs[" + i
+                    + "] cannot be null" );
             add( s );
+            i++;
+        }
     }
 
     public BasicRule( S lhs, Collection<S> rhs ) {
+        if( lhs == null )
+            throw new NullPointerException( "lhs cannot be null" );
         m_lhs = lhs;
         addAll( rhs );
     }
@@ -45,25 +52,21 @@ public class BasicRule<S extends Enum<S>>
         return m_lhs;
     }
 
-    /**
-	 * Setter for the {@code S} {@code lhs.
-	 * @param lhs the {@code S} {@code lhs} to set.
-	 */
-    public void setLhs( S lhs ) {
-        m_lhs = lhs;
-    }
-
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer( m_lhs.toString() ); // can raise NullPointerException.
+        StringBuffer sb = new StringBuffer( toString(m_lhs) ); // can raise NullPointerException.
         sb.append( " ::=" );
         if( isEmpty() )
             sb.append( " /* empty */" );
         else
             for( S s: this )
-                sb.append( " " + s );
+                sb.append( " " + toString(s) );
         sb.append( ";" );
         return sb.toString();
+    }
+    
+    protected String toString(S sym) {
+        return sym.toString();
     }
 
     /**
@@ -97,5 +100,5 @@ public class BasicRule<S extends Enum<S>>
             return -1;
         return 0;
     }
-    
+
 } /* BasicRule */

@@ -39,6 +39,8 @@ public class Grammar<S extends Enum<S>>
     protected final EnumSet<S> m_terminals; // the set of terminals for this grammar.
 
     protected final EnumSet<S> m_nonTerminals; // use both as we can have non used symbols in the grammar.
+    
+    private int m_nextId = 0;
 
     /**
      * Rule extends the behaviour of {@link BasicRule} by forcing all rules in
@@ -55,6 +57,8 @@ public class Grammar<S extends Enum<S>>
         extends BasicRule<S> {
 
         private static final long serialVersionUID = 7740054138474881809L;
+        
+        private final int m_id = m_nextId++;
 
         /**
          * This constructor accepts a left hand side symbol and a {@link List}
@@ -89,6 +93,14 @@ public class Grammar<S extends Enum<S>>
         }
 
         /**
+         * Getter for the {@code int} {@code id} attribute.
+         * @return the {@code int} value of the {@code id} attribute.
+         */
+        public int getId() {
+            return m_id;
+        }
+
+        /**
          * This method conforms the Maps of terminal and non terminal symbols of
          * the {@link Grammar}. For the left hand side, the method adds the
          * symbol to the {@link Set} of nonterminals and eliminates it from the
@@ -101,11 +113,9 @@ public class Grammar<S extends Enum<S>>
          */
         private void addToMaps() {
             S lft = getLhs();
-            if( lft == null )
-                return;
             m_nonTerminals.add( lft );
-            m_terminals.remove( lft );
-            for( S s: this )
+            m_terminals.remove( lft ); // not a terminal anymore.
+            for( S s: this ) // add terminals that are referenced in any rule.
                 if( !m_nonTerminals.contains( s ) )
                     m_terminals.add( s );
             Set<Rule> st = m_rules.get( lft );
@@ -114,6 +124,7 @@ public class Grammar<S extends Enum<S>>
                 m_rules.put( lft, st );
             }
             st.add( this );
+            Grammar.this.add( this );
         }
 
         /**
@@ -124,6 +135,16 @@ public class Grammar<S extends Enum<S>>
          */
         public Grammar<S> getGrammar() {
             return Grammar.this;
+        }
+        
+        @Override
+        public String toString() {
+            return "R[" + m_id + "]: " + super.toString();
+        }
+        
+        @Override
+        protected String toString(S sym) {
+            return String.format( m_nonTerminals.contains( sym ) ? "<%s>" : "%s", sym );
         }
     } // class Rule
 
@@ -193,27 +214,31 @@ public class Grammar<S extends Enum<S>>
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer( getClass().getSimpleName() + "[\n" );
+        if (size() > 0) { 
+            sb.append( "Rules:\n" );
+            for( BasicRule<S> r: this ) {
+                sb.append( "\t" + r + "\n" );
+            }
+        }
         int i = 0;
-        for( BasicRule<S> r: this ) {
-            sb.append( r.getClass().getSimpleName() + "[" + i + "]: " + r
-                + "\n" );
-            i++;
+        if (m_nonTerminals.size() > 0) {
+            sb.append( "Nonterminals: {" );
+            for( S s: m_nonTerminals ) {
+                sb.append( i++ == 0 ? "" : ", " );
+                sb.append( s.toString() );
+            }
+            sb.append( "}\n");
         }
-        sb.append( "nonTerminals:" );
         i = 0;
-        sb.append( " {" );
-        for( S s: m_nonTerminals ) {
-            sb.append( i++ == 0 ? "" : ", " );
-            sb.append( s.toString() );
+        if (m_terminals.size() > 0) {
+            sb.append( "Terminals: {" );
+            for( S s: m_terminals ) {
+                sb.append( i++ == 0 ? "" : ", " );
+                sb.append( s.toString() );
+            }
+            sb.append( "}\n");
         }
-        sb.append( "},\n" + "terminals:" );
-        i = 0;
-        sb.append( " {" );
-        for( S s: m_terminals ) {
-            sb.append( i++ == 0 ? "" : ", " );
-            sb.append( s.toString() );
-        }
-        sb.append( "}\n" + "]" );
+        sb.append( "]" );
         return sb.toString();
     }
 
