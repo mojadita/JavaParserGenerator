@@ -1,23 +1,23 @@
-/**
- * $Id: $
+/* Project: ParserGenerator
+ * Author: Luis Colorado <luiscoloradourcola@gmail.com>
+ * Date: 2016.12.19 14.30
+ * Copyright (C) 2016 LUIS COLORADO.
  *
- * Copyright (C) 2016 BaseN.
- *
- * All rights reserved.
+ * All rights reserved.  This file is open source as ruled by the
+ * BSD License
  */
 package es.lcssl.parsers.common;
 
 import es.lcssl.parsers.grammars.Grammar;
 import es.lcssl.parsers.grammars.compiler.ParseNode;
 
-
-
 /**
  * Interface to register acceptors for {@link Grammar} rule matchers.
  * @author Luis Colorado {@code <lcu@basen.net>}
  */
 public interface Listener<S extends Enum<S>> {
-    /**
+
+	/**
      * Accepting method for {@link Listener}s of {@link Grammar} rule
      * matchers.  This method will be called when a matching rule is
      * accepted by the parser.
@@ -29,4 +29,5 @@ public interface Listener<S extends Enum<S>> {
      * can be obtained.
      */
     void accept(ListenerEvent<S> event);
+
 } /* Listener */
