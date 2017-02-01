@@ -8,7 +8,6 @@
 package net.basen.parsers.generator;
 
 import static net.basen.parsers.generator.SampleGrammar.Symbols.COMMA;
-import static net.basen.parsers.generator.SampleGrammar.Symbols.EOF;
 import static net.basen.parsers.generator.SampleGrammar.Symbols.IDENT;
 import static net.basen.parsers.generator.SampleGrammar.Symbols.LEFT_PAREN;
 import static net.basen.parsers.generator.SampleGrammar.Symbols.RIGHT_PAREN;
