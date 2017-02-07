@@ -7,9 +7,22 @@
  */
 package es.lcssl.parsers.grammars;
 
-
 enum Symbols {
-	expr, term, factor, 
-	NEGATION, AND, OR, LEFT_PAREN, RIGHT_PAREN, IDENTIFIER,
-	unused,
+    START,
+    EXPRESSION,
+    SUM,
+    TERM,
+    MUL,
+    FACTOR,
+    LIST,
+    PLUS,
+    MINUS,
+    MULT,
+    DIV,
+    LEFT_PAREN,
+    RIGHT_PAREN,
+    NUM,
+    IDENT,
+    COMMA,
+    UNUSED,
 } /* Symbols */

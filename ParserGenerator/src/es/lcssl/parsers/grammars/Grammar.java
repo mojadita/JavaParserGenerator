@@ -205,10 +205,20 @@ public class Grammar<S extends Enum<S>>
      * @return the {@link Set} of rules that have {@code sym} as left hand
      *         symbol.
      */
-    public Set<Rule> getRuleSet( S sym ) {
+    public Set<Rule> getRules( S sym ) {
         Set<Rule> res = m_rules.get( sym );
         return res == null ? Collections.emptySet()
             : Collections.unmodifiableSet( res );
+    }
+    
+    /**
+     * Getter for the {@link Map} of rules in this {@link Grammar}.  The
+     * map is indexed by {@code <S>} symbol type.
+     * @return the {@link Map}{@code <S, Set<{@link Rule}>>} as an unmodifiable
+     * map.
+     */
+    public Map<S, Set<Rule>> getRules() {
+        return Collections.unmodifiableMap( m_rules );
     }
 
     @Override

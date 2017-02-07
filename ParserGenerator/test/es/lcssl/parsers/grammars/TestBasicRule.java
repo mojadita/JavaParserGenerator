@@ -32,88 +32,89 @@ public class TestBasicRule {
 	public void testNoLhs() {
 		iut = new BasicRule<Symbols>(null);
 		assertNotNull(iut);
-		assertEquals("null ::= /* empty */;", iut.toString()); // throws the exception.
+		assertEquals("R0: null ::= /* empty */;", iut.toString()); // throws the exception.
 	}
 	
 	@Test
 	public void testPopulate1() {
-		iut = new BasicRule<Symbols>(expr);
-		iut.add(expr);
-		iut.add(OR);
-		iut.add(term);
-		assertEquals("expr ::= expr OR term;", iut.toString());
+		iut = new BasicRule<Symbols>(EXPRESSION);
+		iut.add(EXPRESSION);
+		iut.add(PLUS);
+		iut.add(TERM);
+		assertEquals("EXPRESSION ::= EXPRESSION PLUS TERM;", iut.toString());
 	}
 	
 	@Test
 	public void testPopulate2() {
-		iut = new BasicRule<Symbols>(term, term, AND, factor);
-		assertEquals("term ::= term AND factor;", iut.toString());
+		iut = new BasicRule<Symbols>(TERM, TERM, MULT, FACTOR);
+		assertEquals("TERM ::= TERM MULT FACTOR;", iut.toString());
 	}
 	
 	@Test
 	public void testPopulate3() {
-		iut = new BasicRule<Symbols>(factor, new ArrayList<Symbols>(
-				Arrays.asList(LEFT_PAREN, expr, RIGHT_PAREN)));
-		assertEquals("factor ::= LEFT_PAREN expr RIGHT_PAREN;", iut.toString());
+		iut = new BasicRule<Symbols>(FACTOR, new ArrayList<Symbols>(
+				Arrays.asList(LEFT_PAREN, EXPRESSION, RIGHT_PAREN)));
+		assertEquals("FACTOR ::= LEFT_PAREN EXPRESSION RIGHT_PAREN;", iut.toString());
 	}
 	
 	@Test
 	public void testCreateSeveralRules() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, expr, OR, term);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, term);
-		BasicRule<Symbols> R3 = new BasicRule<Symbols>(term, term, AND, factor);
-		BasicRule<Symbols> R4 = new BasicRule<Symbols>(term, factor);
-		BasicRule<Symbols> R5 = new BasicRule<Symbols>(factor, NEGATION, factor);
-		BasicRule<Symbols> R6 = new BasicRule<Symbols>(factor, LEFT_PAREN, expr, RIGHT_PAREN);
-		BasicRule<Symbols> R7 = new BasicRule<Symbols>(factor, IDENTIFIER);
-		assertEquals("expr ::= expr OR term;", R1.toString());
-		assertEquals("expr ::= term;", R2.toString());
-		assertEquals("term ::= term AND factor;", R3.toString());
-		assertEquals("term ::= factor;", R4.toString());
-		assertEquals("factor ::= NEGATION factor;", R5.toString());
-		assertEquals("factor ::= LEFT_PAREN expr RIGHT_PAREN;", R6.toString());
-		assertEquals("factor ::= IDENTIFIER;", R7.toString());
+		BasicRule<Symbols> R0 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, TERM);
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, TERM);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(TERM, TERM, MULT, FACTOR);
+		BasicRule<Symbols> R3 = new BasicRule<Symbols>(TERM, FACTOR);
+		BasicRule<Symbols> R4 = new BasicRule<Symbols>(FACTOR, MINUS, FACTOR);
+		BasicRule<Symbols> R5 = new BasicRule<Symbols>(FACTOR, LEFT_PAREN, EXPRESSION, RIGHT_PAREN);
+		BasicRule<Symbols> R6 = new BasicRule<Symbols>(FACTOR, IDENT);
+		assertEquals("EXPRESSION ::= EXPRESSION PLUS TERM;", R0.toString());
+		assertEquals("EXPRESSION ::= TERM;", R1.toString());
+		assertEquals("TERM ::= TERM MULT FACTOR;", R2.toString());
+		assertEquals("TERM ::= FACTOR;", R3.toString());
+		assertEquals("FACTOR ::= MINUS FACTOR;", R4.toString());
+		assertEquals("FACTOR ::= LEFT_PAREN EXPRESSION RIGHT_PAREN;", R5.toString());
+		assertEquals("FACTOR ::= IDENT;", R6.toString());
 	}
 	
 	@Test
 	public void testComparisonsEqualTo() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, expr, OR, term);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, expr, OR, term);
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, TERM);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, TERM);
 		assertThat(R1, equalTo(R2));
+		assertNotSame(R1, R2);
 	}
 	
 	@Test
 	public void testComparisonsLessByLHS() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, expr, OR, term);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(term, expr, OR, term);
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, TERM);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(TERM, EXPRESSION, PLUS, TERM);
 		assertThat(R1, is(lessThan(R2)));
 	}
 	
 	@Test
 	public void testComparisonsLessByRHSSameLength() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, expr, AND, term);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, expr, OR, term);
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, TERM);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, MULT, TERM);
 		assertThat(R1, is(lessThan(R2)));
 	}
 	
 	@Test
 	public void testComparisonsLessByRHSSameLengthLastSymbol() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, expr, OR, expr);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, expr, OR, term);
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, EXPRESSION);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, PLUS, TERM);
 		assertThat(R1, is(lessThan(R2)));
 	}
 	
 	@Test
 	public void testComparisonsLessByRHSDifferentLength() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, term, AND, expr);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, term);
-		assertThat(R1, is(greaterThan(R2)));
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION);
+        BasicRule<Symbols> R2 = new BasicRule<Symbols>(EXPRESSION, EXPRESSION, MULT, EXPRESSION);
+		assertThat(R1, is(lessThan(R2)));
 	}
 	
 	@Test
 	public void testComparisonsLessByRHSDifferentLength2() {
-		BasicRule<Symbols> R1 = new BasicRule<Symbols>(expr, term);
-		BasicRule<Symbols> R2 = new BasicRule<Symbols>(expr, term, AND, expr);
-		assertThat(R1, is(lessThan(R2)));
+		BasicRule<Symbols> R1 = new BasicRule<Symbols>(EXPRESSION, TERM, MULT, EXPRESSION);
+		BasicRule<Symbols> R2 = new BasicRule<Symbols>(EXPRESSION, TERM);
+		assertThat(R1, is(greaterThan(R2)));
 	}
 }
