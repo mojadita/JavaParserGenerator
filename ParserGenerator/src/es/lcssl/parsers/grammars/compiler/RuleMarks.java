@@ -82,7 +82,8 @@ public class RuleMarks<S extends Enum<S>>
         if (this == o) return true;
         if( o == null || !(o instanceof RuleMarks))
             return false;
-        return m_rule == ( (RuleMarks<S>) o ).m_rule && super.equals( o );
+        RuleMarks<S> other = (RuleMarks<S>) o;
+        return m_rule.equals( other.m_rule ) && super.equals( other );
     }
 
     @Override
@@ -99,12 +100,11 @@ public class RuleMarks<S extends Enum<S>>
     public int compareTo( RuleMarks<S> o ) {
         if( o == null )
             throw new NullPointerException( "compareTo(null)" );
-        if( getRule() != o.getRule() )
-            throw new IllegalArgumentException( "[" + this + "] and [" + o
-                + "] don't mark the same rule" );
+        int res = getRule().compareTo( o.getRule() );
+        if( res != 0 ) return res;
         Iterator<Integer> i1, i2;
         for( i1 = iterator(), i2 = o.iterator(); i1.hasNext() && i2.hasNext(); ) {
-            int res = i1.next() - i2.next();
+            res = i1.next() - i2.next();
             if( res != 0 )
                 return res;
         }

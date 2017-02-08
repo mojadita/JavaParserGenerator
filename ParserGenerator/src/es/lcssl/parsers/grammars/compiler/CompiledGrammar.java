@@ -61,8 +61,10 @@ public class CompiledGrammar<S extends Enum<S>>
      * 
      * @author Luis Colorado {@code <lcu@basen.net>}
      */
-    public class State {
+    public class State  {
         private final int id = m_states.size();
+        
+        Set<RuleMarks<S>> m_marks;
 
         private final Map<S, Transition> m_nextMap =
             new EnumMap<S, Transition>( m_symbolClass );
@@ -186,6 +188,7 @@ public class CompiledGrammar<S extends Enum<S>>
         public Map<S, Transition> getNextMap() {
             return m_nextMap;
         }
+        
     } // public class State
 
     protected CompiledGrammar( Class<S> symbolClass ) {
